@@ -1,2 +1,2 @@
 ##  Which programming language should I learning first ?
-![whichLanguage]()
+![whichLanguage](http://github.com/powar2sun/Note/raw/master/picture/whichLanguage.png)
