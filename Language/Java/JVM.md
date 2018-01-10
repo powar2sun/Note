@@ -10,6 +10,9 @@
 ####    Book for understanding JVM
 http://book.51cto.com/art/201107/278857.htm
 
+*  GC 示例
+   *  https://www.devh.net/yidongnan/blog/4v312p6ben9jnbg403tsnkvgan
+
 ####    内存分配
 ![jvmStorage](https://github.com/powar2sun/Note/blob/master/Language/pictures/jvmStorage.png)
 
