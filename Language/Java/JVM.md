@@ -7,3 +7,5 @@
 ![methodArea](https://github.com/powar2sun/Note/blob/master/Language/pictures/methodArea.png)
 ####    栈 Stack
 ![stack](https://github.com/powar2sun/Note/blob/master/Language/pictures/stack.png)
+####    Book for understanding JVM
+http://book.51cto.com/art/201107/278857.htm
