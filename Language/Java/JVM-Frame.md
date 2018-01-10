@@ -80,9 +80,13 @@
     *   -XX:+CMSIncrementalMode增量GC，将内存切块，分布在多个局部去GC
 -XX:CMSInitiatingOccupancyFraction在并发GC下，由于一边使用，一边GC，就不能在不够用的时候GC，默认情况下是在使用了68%的时候进行GC
     
-    
-    
-    
+###   JIT：Just-In-Time Compiliation
+
+![jit](https://github.com/powar2sun/Note/blob/master/Language/pictures/jit.png)
+
+Java 字节码是解释执行的，但是没有直接在 JVM 宿主执行原生代码快。为了提高性能，Oracle Hotspot 虚拟机会找到执行最频繁的字节码片段并把它们编译成原生机器码。编译出的原生机器码被存储在非堆内存的代码缓存中。通过这种方法，Hotspot 虚拟机将权衡下面两种时间消耗：将字节码编译成本地代码需要的额外时间和解释执行字节码消耗更多的时间
+
+![jitGC](https://github.com/powar2sun/Note/blob/master/Language/pictures/jitGC.png)
     
     
     
