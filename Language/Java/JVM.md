@@ -37,3 +37,25 @@ http://book.51cto.com/art/201107/278857.htm
     *   虚拟机提供了-XX:+PrintGCDetails这个收集器日志参数，让JVM打印内存回收日志，并且在进程退出的时候 输出当前内存各区域的分配情况
     *   新生代GC（Minor GC）：指发生在新生代的垃圾收集动作，因为Java对象大多都具备朝生夕灭的特性，所以Minor GC非常频繁，一般回收速度也比较快
     *   年代GC（Major GC / Full GC）：指发生在老年代的GC，其经常会伴随至少一次（并非绝对）的Minor GC。它的速度一般会比Minor GC慢10倍以上
+    
+####    对象访问
+*   Object Access
+    *   使用句柄池
+        *   reference中存储的是稳定的句柄地址，在对象被移动（GC时非常普遍）时只会改变句柄中的实例数据指针，而reference本身不用被修改     
+    *   直接引用
+        *   节省了一次指针定位的时间开销，由于对象的访问在Java中非常频繁，因此这类开销积少成多后也是 一项非常可观的执行成本
+
+![objAcc1](https://github.com/powar2sun/Note/blob/master/Language/pictures/objectAccessOne.png)
+![objAcc2](https://github.com/powar2sun/Note/blob/master/Language/pictures/objectAccessTwo.png)
+
+*   Object Structure
+    *   对象头
+        *   32位8字节  System.out.print(sizeOf(new Object()));
+        *   64位16字节 System.out.print(sizeOf(new Object()));
+    *   实例数据
+        *   boolean,byte  -(Memory required)-> 1 bytes
+        *   short,char    -(Memory requierd)-> 2 bytes
+        *   int,float     -(占用)->   4 字节
+        *   long,double   -(占用)->   8 字节
+        *   reference类型  32位占4字节，64位占8字节
+    *   对其填充
