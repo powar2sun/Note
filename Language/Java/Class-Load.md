@@ -87,3 +87,14 @@ ClassFile {
 *   attributes_count,attributes[attributes_count]
     *   不同值的数组，表示这个类的附加信息，attribute_info
     *   包括 RetentionPolicy.CLASS 和 RetentionPolicy.RUNTIME 注解
+    
+使用javap可查看编译后java class文件字节码 如 `javap -v -p -s -sysinfo -constants com/powar/SimpleClass.class`
+一些常见的操作码
+
+|||
+|--|--|
+|aload0|<li>用来把对象引用加载到操作码栈，表示正在被访问的局部变量数组位置，只能是0,1,2,3<li>其它类似的操作码用来载入非对象引用的数据，如iload, lload, fload 和 dload(int,long,float,double)。<li>数组位置大于3的局部变量可以用它们载入。这些操作码都只需要一个操作数，即数组中的位置|
+|idc|该操作码用来将常量从运行时常量池压栈到操作数栈|
+|getstatic|这个操作码用来把一个静态变量从运行时常量池的静态变量列表中压栈到操作数栈|
+|invokexxx|函数调用的操作码包括：invokedynamic、invokeinterface、invokespecial、invokestatic、invokevirtual<li>invokevirutal 指令调用一个对象的实例方法，invokespecial 指令调用实例初始化方法、私有方法、父类方法。|
+|xxxreturn|ireturn、lreturn、freturn、dreturn、areturn 和 return 操作码组。每个操作码返回一种类型的返回值，a 表示返回对象引用。没有前缀类型字母的 return 表示返回 void|
