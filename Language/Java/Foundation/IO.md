@@ -1,38 +1,38 @@
 #   IO
-![io]()
+![io](https://github.com/powar2sun/Note/blob/master/Language/pictures/io.png)
 ##  File
-![file]()
+![file](https://github.com/powar2sun/Note/blob/master/Language/pictures/file.png)
 ####    InputStream
-![inputStream]()
+![inputStream](https://github.com/powar2sun/Note/blob/master/Language/pictures/inputStream.png)
 ####    OutputSteam
-![outputStream]()
+![outputStream](https://github.com/powar2sun/Note/blob/master/Language/pictures/outputStream.png)
 ####    Reader
-![reader]()
+![reader](https://github.com/powar2sun/Note/blob/master/Language/pictures/reader.png)
 ####    Writer
-![writer]()
+![writer](https://github.com/powar2sun/Note/blob/master/Language/pictures/writer.png)
 ####    DataInput
-![dataInput]()
+![dataInput](https://github.com/powar2sun/Note/blob/master/Language/pictures/dataInput.png)
 ####    DataOutput
-![dataOutput]()
+![dataOutput](https://github.com/powar2sun/Note/blob/master/Language/pictures/dataOutput.png)
 ##  IO Type
 *   BIO 阻塞式
 
-![bio]()
+![bio](https://github.com/powar2sun/Note/blob/master/Language/pictures/bio.png)
 
 *   Non-BIO 非阻塞式
 
-![nonBio]()
+![nonBio](https://github.com/powar2sun/Note/blob/master/Language/pictures/nonBio.png)
 
 *   IO(select,poll) 复用
 
-![ioRep]
+![ioRep](https://github.com/powar2sun/Note/blob/master/Language/pictures/ioRep.png)
 
 *   IO 信号驱动式
 
-![ioSinga]()
+![ioSinga](https://github.com/powar2sun/Note/blob/master/Language/pictures/ioSinga.png)
 
 *   IO 异步
 
-![ioAio]()
+![ioAio](https://github.com/powar2sun/Note/blob/master/Language/pictures/ioAio.png)
 
 #   NIO
