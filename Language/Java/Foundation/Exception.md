@@ -2,7 +2,7 @@
 Both `Error` and `RuntimeException` are unchecked exceptions.
 they indicate a flaw with the program,and usually should not be caught.
 ##  Exception
-![throwable]()
+![throwable](https://github.com/powar2sun/Note/blob/master/Language/pictures/throwable.png)
 
 ### Example
 ```java
