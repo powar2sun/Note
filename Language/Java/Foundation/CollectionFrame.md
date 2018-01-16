@@ -1,11 +1,11 @@
 #	Collection Maps
-![collectionMap]()
+![collectionMap](https://github.com/powar2sun/Note/blob/master/Language/pictures/collectionMap.png)
 ##	Collection
-![collection]()
+![collection](https://github.com/powar2sun/Note/blob/master/Language/pictures/collection.png)
 ##	Map
-![map]()
+![map](https://github.com/powar2sun/Note/blob/master/Language/pictures/map.png)
 ##	Point
-![points]()
+![points](https://github.com/powar2sun/Note/blob/master/Language/pictures/points.png)
 ##	Array
 *	One-Dimensional Array
 
