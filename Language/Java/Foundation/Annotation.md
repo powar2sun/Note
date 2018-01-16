@@ -1,8 +1,8 @@
 #   Annotation 注解
-![annotation1]()
-![annotation2]()
+![annotation1](https://github.com/powar2sun/Note/blob/master/Language/pictures/annotation1.png)
+![annotation2](https://github.com/powar2sun/Note/blob/master/Language/pictures/annotation2.png)
 ##  Meta Annotation 元注解
-![metaAnnotation]()
+![metaAnnotation](https://github.com/powar2sun/Note/blob/master/Language/pictures/metaAnnotation.png)
 ##  自定义注解
 ```java
 import java.lang.annotation.*;
