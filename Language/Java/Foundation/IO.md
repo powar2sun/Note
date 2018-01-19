@@ -48,7 +48,7 @@ IO模式会按照Blocking/Non-Blocking、Synchronous/Asynchronous这两个标准
 *   一个 Channel 可以读和写，而一个流一般只能读或者写
 *   Channel 可以异步(asynchronously)的读和写
 *   Channel 总是需要一个 Buffer，不管是读到 Buffer 还是从 Buffer 写到 Channel
-![channels]()
+![channels](https://github.com/powar2sun/Note/blob/master/Language/pictures/channels.png)
 
 ```java
 public class DemoChannel {
@@ -127,10 +127,10 @@ aFile.close();
 ####    Selectors
 多路复用器Selector是Java NIO编程的基础。Selector会不断地轮询注册在其上的Channel，如果某个Channel上面有新的TCP连接接入、读和写事件，
 这个Channel就处于就绪状态，会被Selector轮询出来，然后通过SelectionKey可以获取就绪Channel的集合，进行后续的I/O操作
-![reactor]()
+![reactor](https://github.com/powar2sun/Note/blob/master/Language/pictures/reactor.png)
 
 #   Linux NIO
-![spe]()
+![spe](https://github.com/powar2sun/Note/blob/master/Language/pictures/spe.png)
 ####    Select
 select能监控的描述符个数由内核中的FD_SETSIZE限制，仅为1024（32位，64位为2048），这也是select最大的缺点，因为现在的服务器并发量远远不止1024。
 即使能重新编译内核改变FD_SETSIZE的值，但这并不能提高select的性能。
@@ -148,4 +148,4 @@ epoll维护的描述符数目不受到限制，而且性能不会随着描述符
 epoll在传递内核与用户空间的消息时使用了内存共享，而不是内存拷贝，这也使得epoll的效率比poll和select更高。 
 
 *   selector
-![slect]()
+![select](https://github.com/powar2sun/Note/blob/master/Language/pictures/select.png)
