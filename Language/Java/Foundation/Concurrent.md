@@ -21,12 +21,12 @@ Amdahl 定律旨在说明，多核 CPU 对系统进行优化时，优化的效�
     *   单指令多数据 SIMD 架构，如 图像处理；现代GPU（图形处理器）也因图像处理的特点而演化成了极其强大的数据并行处理器
 *   任务级并行   task-level
     *   共享内存的多处理器系统
-![oneMemoryMultiProcessor]()
+![oneMemoryMultiProcessor](https://github.com/powar2sun/Note/blob/master/Language/pictures/oneMemeoryMultiProcessor.png)
     *   分布式内存的多处理器系统
-![multiMemoryProcesser]()    
+![multiMemoryProcesser](https://github.com/powar2sun/Note/blob/master/Language/pictures/multiMemoryProcesser.png)    
 
 #   Process VS Thread
-![processAndThread]()
+![processAndThread](https://github.com/powar2sun/Note/blob/master/Language/pictures/processAndThread.png)
 
 *   内存空间
     *   进程间，独立的内存空间
@@ -51,7 +51,7 @@ Amdahl 定律旨在说明，多核 CPU 对系统进行优化时，优化的效�
     *   线程                
         *   线程切换JVM内存空间不会变化
 ####    Thread State 线程状态
-![threadLifecycle]()        
+![threadLifecycle](https://github.com/powar2sun/Note/blob/master/Language/pictures/threadLifecycle.png)        
 ####    happens-before原则
 *   次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在后面的操作
     *   这个规则是用来保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性
