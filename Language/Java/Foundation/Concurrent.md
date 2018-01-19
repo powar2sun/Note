@@ -21,7 +21,7 @@ Amdahl 定律旨在说明，多核 CPU 对系统进行优化时，优化的效�
     *   单指令多数据 SIMD 架构，如 图像处理；现代GPU（图形处理器）也因图像处理的特点而演化成了极其强大的数据并行处理器
 *   任务级并行   task-level
     *   共享内存的多处理器系统
-![oneMemoryMultiProcessor](https://github.com/powar2sun/Note/blob/master/Language/pictures/oneMemeoryMultiProcessor.png)
+![oneMemoryMultiProcessor](https://github.com/powar2sun/Note/blob/master/Language/pictures/oneMemoryMultiProcessor.png)
     *   分布式内存的多处理器系统
 ![multiMemoryProcesser](https://github.com/powar2sun/Note/blob/master/Language/pictures/multiMemoryProcesser.png)    
 
