@@ -1,9 +1,9 @@
 #   Concurrent and Parallel
-![concurrentAndParallel]()
+![concurrentAndParallel](https://github.com/powar2sun/Note/blob/master/Language/pictures/concurrentAndParallel.png)
 ####    Amdahl
 Amdahl 定律旨在说明，多核 CPU 对系统进行优化时，优化的效果取决于 CPU 的数量以及系统中的串行化程序的比重；
 如果仅关注于提高 CPU 数量而不降低程序的串行化比重，也 无法提高系统性能。
-![amdahl]()
+![amdahl](https://github.com/powar2sun/Note/blob/master/Language/pictures/amdahl.png)
 ####    Point key
 *   原子性
     *   对基本数据类型的变量的读取和赋值操作是原子性操作，即这些操作是不可被中断的，要么执行，要么不执行
