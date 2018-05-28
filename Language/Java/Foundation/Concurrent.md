@@ -128,3 +128,348 @@ CAS 操作包含三个操作数 —— 内存位置（V）、预期原值（A）
 *   内存屏障
     *   处理器提供一组机器指令来确保指令的顺序要求，它告诉处理器在继续执行前提交所有尚未处理的载入和存储指令，同样的也可以要求编译器不要对给定点以及周围指令序列进行重排    
     *   具体的确保措施在程序语言级别的体现就是内存模型的定义.内存屏障做了两件事情：拒绝重排，更新缓存.Java使用happens-before规则来屏蔽具体细节保证，指导JVM在指令生成的过程中穿插屏障指令
+    
+ ####  多线程三概念
+ *  原子性
+    *   一个操作(可能包含自操作)要么全部执行(生效),要么全部不执行(不生效)
+ *  可见性
+    *   多线程共享变量时,一个线程对共享变量的修改,其它线程能够立即看到
+        *   即CPU的缓存主机内存的数据一致性问题
+ *  顺序性
+    *   程序执行的顺序按照代码的先后顺序执行
+        *   CPU代码优化,可能对指令重排序.但要保证单线程执行结果和代码结果的最终一致性
+        
+####    Java如何保证原子性
+*   锁和同步
+```
+// 上锁
+lock.lock();
+...
+// 放锁
+lock.lock(); 
+nlock();
+//同步
+synchronized(anyObject){
+    ...
+}
+
+synchronized 非静态方法  锁住当前实例
+synchronized 静态方法   锁住类对象Class
+synchronized 代码块    锁住(anyObject)
+```
+*   CAS   
+```
+AtomicInteger ai=new AtomicInteger()
+ai.incrementAndGet();
+```
+
+####    Java如何保证可见性
+```
+volatile variable;
+```
+
+####    Java如何保证顺序性
+```
+1.volatile能够保证一定的顺序性
+2.synchronized和lock,将执行单元单线程化
+3 Happens-Before原则
+    传递原则
+        A操作在B操作之前,B操作在C操作之前,那么A操作肯定在C操作之前
+    锁定原则
+        unlock肯定发生获取在同一个锁lock之前
+    volatile原则
+        对volatile变量的读操作发生在写操作之前
+    程序次序原则
+        一个线程内,按照代码顺序执行
+    线程启动原则
+        线程的start()先发生于此线程的其它动作
+    线程终结原则
+        线程的终止操作先发生于其它操作之前
+    线程中断原则
+        线程的interrupt()先发生于对该中断异常的获取
+    对象终结原则
+        一个对象的构造先发生于它的finalize
+```
+
+####    volatile使用场景
+*   无须保证原子性,但却需要可见性的场景.如停止线程的FLAG
+```
+// 如果不用volatile修饰,即使其它处改变了running,该线程也不一定立即终止
+volatile boolean running = true;
+new Thread(()->{
+    while(running){
+        ...
+    }
+}).start()
+
+public void stop(){
+    running = false;
+}
+```
+
+####    其它保证线程安全的方法
+```
+1. ThreadLocal
+2. 不可变对象
+3. 避免多线程的共享变量
+```
+
+####    sleep() VS wait()
+wait()  Object类方法       暂时放锁    等待其它线程对同一对象的notify()激活  进入就绪队列
+
+```
+/*
+执行结果
+    A is running
+    B is running
+    B release lock
+    A is ended
+    B is ended
+*/
+
+public class WaitDemo{
+    public static void main(String[] args){
+        Thread threadA = new Thread(()->{
+            synchronized (WaitDemo.class){
+                System.out.println(new Date()+"A is running");
+                WaitDemo.class.wait();
+                System.out.println(new Date()+"A is ended");
+            }
+        });
+        threadA.start();
+        Thread threadB = new Thread(()->{
+            synchronized(WatiDemo.class){
+                System.out.println(new Date()+"B is ended");
+                WaitDemo.class.notify();
+                
+                 // 延长执行时间
+                 // B在notify()之后,A并未执行,因为A还没有得到锁,只是进入该锁的等待队列
+                for(long i=0;i<200000;i++){
+                    for(long j=0;j<200000;j++){}
+                }
+                System.out.println(new Date()+"B relases lock");
+                // 拖延时间
+                for(long i=0;i<200000;i++){
+                    for(long j=0;j<200000;j++){}
+                }
+                System.out.println("B is ended");
+            }
+        });
+        
+        // 不使用sleep()延长执行时间
+        for(long i=0;i<200000;i++){
+            for(long j=0;j<200000;j++){}
+        }
+    
+        threadB.start();
+    }
+}
+```
+
+sleep() Thread类静态方法   不会放锁     实际上并不要求有锁,若有锁也不放,暂时让出CPU时间片
+
+```
+/*
+执行结果
+    A is running
+    A is ended
+    B is running
+    B is ended
+*/
+public class SleepDemo{
+    public static void main(String[] args){
+        Thread threadA = new Thread(()->{
+            synchronized (SleepDemo.class){
+                System.out.println(new Date()+"A is running");
+                Thread.sleep(2000); // A拿到锁睡眠,但并未释放锁,其它线程无法执行.只有等待该线程结束后放锁
+                System.out.println(new Date()+"A is ended");
+            }
+        });
+        threadA.start();
+        
+        Thread threadB = new Thread(()->{
+            synchronized(SleepDemo.class){
+                System.out.println(new Date()+"B is ended");
+                Thread.sleep(2000);
+                System.out.println("B is ended");
+            }
+        });
+        
+        // 不使用sleep()延长执行时间
+        for(long i=0;i<200000;i++){
+            for(long j=0;j<200000;j++){}
+        }
+    
+        threadB.start();
+    }
+}
+```
+
+*   对象锁(内置锁)
+    *   每个类对象都有一把内置锁
+    *   同步实例方法获取的是该对象的内置锁
+    *   若多线程调用同一实例的同步方法需要竞争锁
+    *   若多线程调用不同实例的同步方法并不竞争锁
+*   类级锁(静态锁)
+    *   类只有一把Class锁
+    *   多线程调用同一个类的不同静态方法会产生锁竞争
+    
+####    锁对象
+*   重入锁
+    *   与内置锁一样是排它锁
+        *   公平锁与非公平锁,构造函数时可指定
+        *   tryLock()
+```
+Lock lock = new ReentrantLock(true);
+lock.lock();
+...
+lock.unlock();
+```    
+*   读写锁
+    *   多线程的读无需锁,读写和写写需要锁,ReadWriteLock使用此场景
+        *   ReentrantReadWriteLock有两个静态内部类 ReadLock和WriteLock
+        *   获得读锁后(readLock()),其它线程可以获取读锁但不能获取写锁
+        *   获得写锁后(writeLock()),其它线程既不能获取读锁也不能获取写锁
+```
+//A 和 B 获取的是读锁,可以并行执行,C 要获取写锁,只能等A和B释放后才能获得
+public class Demo{
+    public static void main(String[] args){
+        ReadWriteLock rwl = new ReentrantReadWriteLock();
+        
+        new Thread(()->{
+            rwl.readLock().lock();
+            sout("A started with read lock");
+            Thread.sleep(3000);
+            sout("A ended");
+            rwl.readLock().unlock();
+        }).start();    
+        
+        new Thread(()->{
+            rwl.readLock().lock();
+            sout("B started with read lock");
+            Thread.sleep(3000);
+            sout("B ended");
+            rwl.readLock().unlock();
+        }).start();
+        
+        new Thread(()->{
+            Lock lock = rwl.writeLock();
+            lock.lock();
+            sout("C started with write lock");
+            Thread.sleep(1000);
+            sout("C ended");
+            lock.unlock();
+        }).start();
+    }
+}
+```
+
+*   条件锁
+    *   理解概念,每个可重入锁都可以newCondition()绑定若干个条件的对象
+        *   await() <--> signal(),signalAll()
+        *   调用上述方法的前提是已经获得该条件对象对应的重入锁
+        *   signal()和signalAll()只能唤醒相同条件对象的等待
+        *   一个重入锁上可有多个条件变量，不同线程可等待不同的条件，更加细粒度的的线程间通信
+```
+public class ConditionTest{
+    public static void main(String[] args){
+        Lock lock=new ReentrantLock();
+        Condition condition=lock.newCondition();
+        
+        new Thread(()->{
+            lock.lock();
+            sout
+        }).start();
+    }
+}
+```
+
+
+####    信号量    
+信号量维护一个许可集，可通过acquire()获取许可（若无可用许可则阻塞），通过release()释放许可，从而可能唤醒一个阻塞等待许可的线程。
+与互斥锁类似，信号量限制了同一时间访问临界资源的线程的个数，并且信号量也分公平信号量与非公平信号量。
+而不同的是，互斥锁保证同一时间只会有一个线程访问临界资源，而信号量可以允许同一时间多个线程访问特定资源。
+所以信号量并不能保证原子性。      
+信号量的一个典型使用场景是限制系统访问量。
+每个请求进来后，处理之前都通过acquire获取许可，若获取许可成功则处理该请求，若获取失败则等待处理或者直接不处理该请求
+*   acquire()
+*   release()
+
+####    线程间通信
+*   CountDownLatch
+    *   场景:某个线程需要等待一个或多个线程操作结束,才开始执行
+```
+public class CountDownLatchDemo{
+    public static void main(String[] args){
+    int totals = 3;
+    CountDownLatch countDown = new CountDownLatch(total);
+    long start=System.currentTimeMillis();
+    for(int i=0;i<total;i++){
+        new Thread(()->{
+            sout(String.format("",new Date(),"Thread-"+i,"started"));
+            Thread.sleep(2000);
+            coutDown.countDown();
+            sout(String.format("%s\t%s %s",new Date(),"Thread-"+i,"ended"));
+        }).start();
+        
+        countDown.await();
+        long stop=System.currentTimeMillis();
+        sout("Total Cost time is: %s ms",(stop-start));
+    }
+    
+    }
+}
+```
+*   CyclicBarrier
+    *   CyclicBarrier是让多个线程互相等待某一事件的发生，然后同时被唤醒。
+    而上文讲的CountDownLatch是让某一线程等待多个线程的状态，然后该线程被唤醒
+    *   每个线程都不会在其它所有线程执行await()方法前继续执行，
+    而等所有线程都执行await()方法后所有线程的等待都被唤醒从而继续执行
+```
+public class CyclicBarrierDemo{
+    public static void main(String[] args){
+        int totalThread = 5;
+        CyclicBarrier barrier=new CyclicBarrier(totalThread);
+        for(int i=0;i<totalThread;i++){
+            String threadName="Thread"+i;
+            new Thread(()->{
+                sout(String.format("%s\t%s %s",new Date(),threadName,"is waiting"));
+                barrier.await();
+                System.out.println(String.format("%s\t%s %s", new Date(), threadName, "ended"));
+            }).start();
+        }
+    }
+}
+```    
+*   Phaser
+    *   一种任务可以分为多个阶段，现希望多个线程去处理该批任务，
+    对于每个阶段，多个线程可以并发进行，但是希望保证只有前面一个阶段的任务完成之后才能开始后面的任务
+    *   多个线程必须等到其它线程的同一阶段的任务全部完成才能进行到下一个阶段，
+    并且每当完成某一阶段任务时，Phaser都会执行其onAdvance方法
+```
+public class PhaserDemo {
+  public static void main(String[] args) throws IOException {
+    int parties = 3;
+    int phases = 4;
+    final Phaser phaser = new Phaser(parties) {
+      @Override  
+      protected boolean onAdvance(int phase, int registeredParties) {  
+          System.out.println("====== Phase : " + phase + " ======");  
+          return registeredParties == 0;  
+      }  
+    };
+    
+    for(int i = 0; i < parties; i++) {
+      int threadId = i;
+      Thread thread = new Thread(() -> {
+        for(int phase = 0; phase < phases; phase++) {
+          System.out.println(String.format("Thread %s, phase %s", threadId, phase));
+          phaser.arriveAndAwaitAdvance();
+        }
+      });
+      thread.start();
+    }
+  }
+}
+
+```    
